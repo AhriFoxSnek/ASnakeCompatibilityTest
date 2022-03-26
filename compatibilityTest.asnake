@@ -1,0 +1,109 @@
+from os import system, listdir, path, chdir, remove
+from time import sleep, monotonic
+import subprocess
+import re
+import pickle
+import ASnake
+
+
+# + user parameter start
+
+int runXTimes = 1 
+# ^ 1 is reccomended for quick check, higher for performance measuring
+bool ignoreCurrentData False
+# ^ when True will re-record the data
+str runTime = 'python'
+# ^ what run command to call
+const str folderName = '/home/ahri/Documents/Code/ASnake/rosettaCodes'
+# ^ enter your directory
+
+# - user parameter end
+
+
+
+const str data = 'data.pkl'
+const str ASnakeTimeFile = 'bestASnakeTime.txt'
+chdir(folderName)
+
+list filesToTest is folderName to listdir
+filesToTest is [file for file in filesToTest if file.endswith('.py')]
+dict outputs {}
+list timez
+
+if not ignoreCurrentData and path.isfile(data)
+	try filesToTest.remove(ASnakeTimeFile)
+	except ValueError pass
+	with open(data,'rb') as f
+		outputs=pickle.load(f)
+	if [_ for _ in outputs] isnt filesToTest
+		outputs = {}
+		"new files."
+		remove('bestASnakeTime.txt')
+
+timez=[]
+if not outputs
+	"\tgetting Python outputs ..."
+	for file in filesToTest
+		print file+' ',end=''
+		with open(file,'r') as f:
+			script = f.read()
+		functionTimes = []
+		loop runXTimes
+			ss = monotonic()
+			process = subprocess.run([runTime,'-c',script], capture_output=True, text=True)
+			functionTimes.append(monotonic()-ss)
+		timez.append(sum(functionTimes) / len(functionTimes))
+		output = process.stdout
+		print round(timez[-1],2)
+		outputs[file] = output
+	f"\ttook: {round(sum(timez),2)}"
+	
+	with open(data,'wb') as f
+		pickle.dump(outputs,f)
+	"saved."
+
+
+
+"\n\tgetting ASnake outputs ..." 
+count 0
+timez=[]
+for file in filesToTest
+	print file+' ',end=''
+	with open(file,'r') as f
+		script=ASnake.build("$ pythonCompatibility\n" + f.read())
+	functionTimes = []
+	loop runXTimes
+		ss = monotonic()
+		process = subprocess.run([runTime,'-c',script], capture_output=True, text=True)
+		functionTimes.append(monotonic()-ss)
+	timez.append(sum(functionTimes) / len(functionTimes))
+	if process.stdout
+		output = process.stdout
+	else
+		output = process.stderr
+	print round(timez[-1],2)
+	if output != outputs[file]
+		"_____"
+		print outputs[file]
+		"~~~~~"
+		print output
+		"_____"
+		f"{file} failed!"
+		exit
+    count+=1
+currentTime=round(sum(timez),2)
+f"\ttook: {currentTime}"
+if ASnakeTimeFile to path.isfile
+	with open(ASnakeTimeFile,'r') as f
+		bestTime=f.read() into float
+	if currentTime < bestTime
+		f"\tnew best time! old time: {bestTime}"
+		with open(ASnakeTimeFile,'w') as f
+			f.write(currentTime to str)
+else:
+	with open(ASnakeTimeFile,'w') as f
+		f.write(currentTime to str)
+'all done!'
+
+
+
