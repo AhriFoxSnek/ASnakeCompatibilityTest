@@ -1,9 +1,12 @@
-from os import system, listdir, path, chdir, remove
+from os import system, listdir, path, chdir, remove, getcwd
 from time import sleep, monotonic
 import subprocess
 import re
 import pickle
 import ASnake
+
+# rosetta codes requires the following dependencies:
+# numpy
 
 
 # + user parameter start
@@ -14,8 +17,8 @@ bool ignoreCurrentData False
 # ^ when True will re-record the data
 str runTime = 'python'
 # ^ what run command to call
-const str folderName = '/home/ahri/Documents/Code/ASnake/rosettaCodes'
-# ^ enter your directory
+str codeFolder = 'rosettaCodes'
+# ^ enter your directory of codes to test against
 
 # - user parameter end
 
@@ -23,9 +26,10 @@ const str folderName = '/home/ahri/Documents/Code/ASnake/rosettaCodes'
 
 const str data = 'data.pkl'
 const str ASnakeTimeFile = 'bestASnakeTime.txt'
-chdir(folderName)
+const float pythonVersion = float('.'.join(subprocess.run([runTime,'--version'], capture_output=True, text=True).stdout.replace('Python ','').split('.')[:-1]))
+chdir(codeFolder)
 
-list filesToTest is folderName to listdir
+list filesToTest is listdir()
 filesToTest is [file for file in filesToTest if file.endswith('.py')]
 dict outputs {}
 list timez
@@ -70,7 +74,7 @@ timez=[]
 for file in filesToTest
 	print file+' ',end=''
 	with open(file,'r') as f
-		script=ASnake.build("$ pythonCompatibility\n" + f.read())
+		script=ASnake.build("$ pythonCompatibility\n" + f.read(), pythonVersion=pythonVersion)
 	functionTimes = []
 	loop runXTimes
 		ss = monotonic()
