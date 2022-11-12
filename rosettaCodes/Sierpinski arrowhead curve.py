@@ -1,5 +1,4 @@
  
-import matplotlib.pyplot as plt
 import math
  
  
@@ -38,8 +37,7 @@ def draw_lsystem(axiom, rules, angle, iterations):
         elif c == "+":
             direction = (direction + angle) % 360
  
-    plt.plot(xp, yp)
-    #plt.show()
+    print(xp, yp)
  
  
 if __name__ == '__main__':
