@@ -4,8 +4,6 @@ from itertools import chain, count, islice
 from operator import itemgetter
 from math import gcd
  
-from matplotlib import pyplot
- 
  
 # yellowstone :: [Int]
 def yellowstone():
@@ -52,11 +50,6 @@ def main():
     print(showList(
         take(30)(yellowstone())
     ))
-    pyplot.plot(
-        take(100)(yellowstone())
-    )
-    pyplot.xlabel(main.__doc__)
-    #pyplot.show()
  
  
 # GENERIC -------------------------------------------------
