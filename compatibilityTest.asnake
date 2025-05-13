@@ -4,6 +4,7 @@ import subprocess
 import re
 import pickle
 import ASnake
+import concurrent
 
 # rosetta codes requires the following dependencies:
 # numpy
@@ -67,12 +68,7 @@ if not outputs
 	"saved."
 
 
-
-"\n\tgetting ASnake outputs ..." 
-count 0
-timez=[]
-for file in filesToTest
-	print file+' ',end=''
+testScript does float
 	with open(file,'r') as f
 		script=ASnake.build("$ pythonCompatibility\n" + f.read(), pythonVersion=pythonVersion)
 	functionTimes = []
@@ -80,12 +76,11 @@ for file in filesToTest
 		ss = monotonic()
 		process = subprocess.run([runTime,'-c',script], capture_output=True, text=True)
 		functionTimes.append(monotonic()-ss)
-	timez.append(sum(functionTimes) / len(functionTimes))
 	if process.stdout
 		output = process.stdout
 	else
 		output = process.stderr
-	print round(timez[-1],2)
+	
 	if output != outputs[file]
 		"_____"
 		print outputs[file]
@@ -94,7 +89,24 @@ for file in filesToTest
 		"_____"
 		f"{file} failed!"
 		exit
-    count+=1
+	return sum(functionTimes) / len(functionTimes)
+	
+from str file
+	
+
+"\n\tgetting ASnake outputs ..." 
+int  count  0
+list timez []
+with concurrent.futures.ThreadPoolExecutor() as pool:
+	$funcPass
+    dict thread_to_file = {pool.submit(testScript, file): file for file in filesToTest}
+    for thread in concurrent.futures.as_completed(thread_to_file):
+		float time_result = thread.result() 
+        timez.append(time_result)
+		count += 1
+		print(f"{count}/{filesToTest to len} {thread_to_file[thread]} {round(time_result, 2)}")
+		
+
 currentTime=round(sum(timez),2)
 f"\ttook: {currentTime}"
 if ASnakeTimeFile to path.isfile
