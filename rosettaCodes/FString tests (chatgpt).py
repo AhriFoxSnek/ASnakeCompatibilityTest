@@ -29,9 +29,11 @@ print(f"Sum of {x} and {y}: {x + y}")
 print(f"Formatted sum: {x + y:04}")
 
 # Escape sequences
+line1   = 'Line1\n'   ; line2   = 'Line2'
+column1 = 'Column1\t' ; column2 = 'Column2'
 print(f"Curly braces escaped: {{Hello}}")
-print(f"Newline character: {'Line1\\nLine2':<15s}")
-print(f"Tab character: {'Column1\\tColumn2':<20s}")
+print(f"Newline character: {line1+line2:<15s}")
+print(f"Tab character: {column1+column2:<20s}")
 
 # Complex nested f-strings
 nested = f"{'nested':>10}"
