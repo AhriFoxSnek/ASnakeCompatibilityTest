@@ -1,7 +1,6 @@
-from os import system, listdir, path, chdir, remove, getcwd
-from time import sleep, monotonic
+from os import listdir, path, chdir, remove, cpu_count
+from time import monotonic
 import subprocess
-import re
 import pickle
 import ASnake
 import concurrent.futures
@@ -36,14 +35,11 @@ dict outputs {}
 list timez
 
 if not ignoreCurrentData and path.isfile(data)
-	try filesToTest.remove(ASnakeTimeFile)
-	except ValueError pass
 	with open(data,'rb') as f
 		outputs=pickle.load(f)
-	if [_ for _ in outputs] isnt filesToTest
+	if outputs to set isnt filesToTest to set
 		outputs = {}
 		"new files."
-		remove('bestASnakeTime.txt')
 
 timez=[]
 if not outputs
@@ -97,7 +93,7 @@ from str file
 "\n\tgetting ASnake outputs ..." 
 int  count  0
 list timez []
-with concurrent.futures.ThreadPoolExecutor() as pool:
+with concurrent.futures.ProcessPoolExecutor(max_workers=cpu_count()-1) as pool:
 	$funcPass
     dict thread_to_file = {pool.submit(testScript, file): file for file in filesToTest}
     for thread in concurrent.futures.as_completed(thread_to_file):
