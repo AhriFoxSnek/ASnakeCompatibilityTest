@@ -4,7 +4,7 @@ import subprocess
 import re
 import pickle
 import ASnake
-import concurrent
+import concurrent.futures
 
 # rosetta codes requires the following dependencies:
 # numpy
@@ -16,7 +16,7 @@ int runXTimes = 1
 # ^ 1 is reccomended for quick check, higher for performance measuring
 bool ignoreCurrentData False
 # ^ when True will re-record the data
-str runTime = 'python'
+str runTime = 'python3'
 # ^ what run command to call
 str codeFolder = 'rosettaCodes'
 # ^ enter your directory of codes to test against
