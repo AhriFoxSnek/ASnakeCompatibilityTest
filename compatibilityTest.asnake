@@ -4,6 +4,9 @@ import subprocess
 import pickle
 import ASnake
 import concurrent.futures
+$ ifVersion = 3.14
+    import multiprocessing
+    multiprocessing.set_start_method('fork')
 
 # rosetta codes requires the following dependencies:
 # numpy
@@ -86,36 +89,36 @@ testScript does float
 		f"{file} failed!"
 		exit
 	return sum(functionTimes) / len(functionTimes)
-	
 from str file
 	
 
-"\n\tgetting ASnake outputs ..." 
-int  count  0
-list timez []
-with concurrent.futures.ProcessPoolExecutor(max_workers=cpu_count()-1) as pool:
-	$funcPass
-    dict thread_to_file = {pool.submit(testScript, file): file for file in filesToTest}
-    for thread in concurrent.futures.as_completed(thread_to_file):
-		float time_result = thread.result() 
-        timez.append(time_result)
-		count += 1
-		print(f"{count}/{filesToTest to len} {thread_to_file[thread]} {round(time_result, 2)}")
-		
-
-currentTime=round(sum(timez),2)
-f"\ttook: {currentTime}"
-if ASnakeTimeFile to path.isfile
-	with open(ASnakeTimeFile,'r') as f
-		bestTime=f.read() into float
-	if currentTime < bestTime
-		f"\tnew best time! old time: {bestTime}"
+if __name__ == "__main__"
+	"\n\tgetting ASnake outputs ..." 
+	int  count  0
+	list timez []
+	with concurrent.futures.ProcessPoolExecutor(max_workers=cpu_count()-1) as pool:
+	    $funcPass
+	    dict thread_to_file = {pool.submit(testScript, file): file for file in filesToTest}
+	    for thread in concurrent.futures.as_completed(thread_to_file):
+			float time_result = thread.result() 
+	        timez.append(time_result)
+			count += 1
+			print(f"{count}/{filesToTest to len} {thread_to_file[thread]} {round(time_result, 2)}")
+			
+	
+	currentTime=round(sum(timez),2)
+	f"\ttook: {currentTime}"
+	if ASnakeTimeFile to path.isfile
+		with open(ASnakeTimeFile,'r') as f
+			bestTime=f.read() into float
+		if currentTime < bestTime
+			f"\tnew best time! old time: {bestTime}"
+			with open(ASnakeTimeFile,'w') as f
+				f.write(currentTime to str)
+	else:
 		with open(ASnakeTimeFile,'w') as f
 			f.write(currentTime to str)
-else:
-	with open(ASnakeTimeFile,'w') as f
-		f.write(currentTime to str)
-'all done!'
+	'all done!'
 
 
 
